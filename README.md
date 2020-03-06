@@ -71,3 +71,7 @@ Returns 20 quotes by Neil Gaiman.
 ```
 
 Returns random quote from database.
+
+# Try it out 
+
+https://tintin-quotes-api.herokuapp.com
