@@ -53,6 +53,29 @@ app.get("/quotes/author=:author", (req, res) => {
   });
 });
 
+// LIMIT QUERIES RETURNED
+
+app.get("/quotes/author=:author/:limit", (req, res) => {
+  Quote
+  .find({author: req.params.author})
+  .limit(parseInt(req.params.limit, 10))
+  .exec((err, foundQuotes) => {
+    if (!err) {
+
+      if (foundQuotes.length !== 0) {
+        res.send(foundQuotes);
+      } else {
+        res.send({
+          message: "No quotes from requested author."
+        })
+      }
+
+    } else {
+      res.send(err);
+    }
+  });
+});
+
 // SEARCH BY SOURCE
 
 app.get("/quotes/source=:source", (req, res) => {
@@ -75,23 +98,43 @@ app.get("/quotes/source=:source", (req, res) => {
   });
 });
 
+// LIMIT QUERIES RETURNED
+
+app.get("/quotes/source=:source/:limit", (req, res) => {
+  Quote
+  .find({source: req.params.source})
+  .limit(parseInt(req.params.limit, 10))
+  .exec((err, foundQuotes) => {
+    if (!err) {
+
+      if (foundQuotes.length !== 0) {
+        res.send(foundQuotes);
+      } else {
+        res.send({
+          message: "No quotes from requested author."
+        })
+      }
+
+    } else {
+      res.send(err);
+    }
+  });
+});
+
 // RANDOM QUOTE
 
 app.get("/quotes/random", (req, res) => {
-  Quote.find((err, foundQuotes) => {
-    if(!err){
-      if(foundQuotes !== 0){
-        randNum = Math.floor(Math.random()*foundQuotes.length);
+  Quote.count().exec((err, count) => {
+    let randNum = Math.floor(Math.random()*count);
 
-        res.send(foundQuotes[randNum]);
+    Quote.findOne().skip(randNum).exec((err, foundQuote) =>{
+      if(!err){
+        res.send(foundQuote);
       }
       else{
-        res.send({message: "Oops, something went wrong!"});
+        res.send(err);
       }
-    }
-    else{
-      res.send(err);
-    }
+    });
   });
 });
 
