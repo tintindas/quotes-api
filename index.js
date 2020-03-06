@@ -19,6 +19,11 @@ const quoteSchema = new Schema({
 
 const Quote = new mongoose.model("Quote", quoteSchema);
 
+//HOME
+
+app.get("/", (req, res) => {
+  res.redirect("/quotes/random");
+})
 // ALL QUOTES
 
 app.get("/quotes", (req, res) => {
@@ -124,7 +129,7 @@ app.get("/quotes/source=:source/:limit", (req, res) => {
 // RANDOM QUOTE
 
 app.get("/quotes/random", (req, res) => {
-  Quote.count().exec((err, count) => {
+  Quote.estimatedDocumentCount().exec((err, count) => {
     let randNum = Math.floor(Math.random()*count);
 
     Quote.findOne().skip(randNum).exec((err, foundQuote) =>{
@@ -138,6 +143,6 @@ app.get("/quotes/random", (req, res) => {
   });
 });
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log("Server started on port 3000");
 });
