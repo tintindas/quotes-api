@@ -19,6 +19,14 @@ const quoteSchema = new Schema({
 
 const Quote = new mongoose.model("Quote", quoteSchema);
 
+function titleCase(str) {
+  let splitStr = str.toLowerCase().split(" ");
+  for (var i = 0; i < splitStr.length; i++) {
+       splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+   }
+   return splitStr.join(' ');
+}
+
 //HOME
 
 app.get("/", (req, res) => {
@@ -39,8 +47,11 @@ app.get("/quotes", (req, res) => {
 // SEARCH BY AUTHOR
 
 app.get("/quotes/author=:author", (req, res) => {
+
+  const author_name = titleCase(req.params.author);
+
   Quote.find({
-    author: req.params.author
+    author: author_name
   }, (err, foundQuotes) => {
     if (!err) {
 
@@ -61,8 +72,11 @@ app.get("/quotes/author=:author", (req, res) => {
 // LIMIT QUERIES RETURNED
 
 app.get("/quotes/author=:author/:limit", (req, res) => {
+
+  const author_name = titleCase(req.params.author);
+
   Quote
-  .find({author: req.params.author})
+  .find({author: author_name})
   .limit(parseInt(req.params.limit, 10))
   .exec((err, foundQuotes) => {
     if (!err) {
@@ -84,8 +98,11 @@ app.get("/quotes/author=:author/:limit", (req, res) => {
 // SEARCH BY SOURCE
 
 app.get("/quotes/source=:source", (req, res) => {
+
+  const qSource = titleCase(req.params.source);
+
   Quote.find({
-    source: req.params.source
+    source: qSource
   }, (err, foundQuotes) => {
     if (!err) {
 
@@ -106,8 +123,11 @@ app.get("/quotes/source=:source", (req, res) => {
 // LIMIT QUERIES RETURNED
 
 app.get("/quotes/source=:source/:limit", (req, res) => {
+
+  const qSource = titleCase(req.params.source);
+
   Quote
-  .find({source: req.params.source})
+  .find({source: qSource})
   .limit(parseInt(req.params.limit, 10))
   .exec((err, foundQuotes) => {
     if (!err) {
