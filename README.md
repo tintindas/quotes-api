@@ -53,7 +53,7 @@ Example:
 
 Returns all quotes from Coraline.
 
-## Limit returned QUERIES
+## Limit returned queries
 
 ```
 /quotes?limit=<NUMBER OF QUOTES REQUIRED>
