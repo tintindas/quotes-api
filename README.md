@@ -24,7 +24,7 @@ Returns all the quotes in the database.
 ## Search by author
 
 ```
-/quotes?author=<AUTHOR'S NAME
+/quotes?author=<AUTHOR'S NAME>
 ```
 
 Returns all quotes by specified author.
@@ -69,7 +69,7 @@ Get required number of quotes returned by specifying a number after author or so
 Example:
 
 ```
-/quotes/author=Neil Gaiman/20
+/quotes?author=Neil Gaiman&limit=20
 ```
 Returns 20 quotes by Neil Gaiman.
 
