@@ -31,69 +31,58 @@ function titleCase(str) {
 
 app.get("/", (req, res) => {
   res.redirect("/quotes/random");
-})
-// ALL QUOTES
+});
+
+// SEARCH
 
 app.get("/quotes", (req, res) => {
-  Quote.find((err, foundQuotes) => {
-    if (!err) {
-      res.send(foundQuotes);
-    } else {
-      res.send(err);
-    }
-  });
-});
 
-// SEARCH BY AUTHOR
-
-app.get("/quotes/author=:author", (req, res) => {
-
-  const author_name = titleCase(req.params.author);
-
-  Quote
-  .find({author: author_name})
-  .limit(parseInt(req.query.limit, 10))
-  .exec((err, foundQuotes) => {
-    if (!err) {
-
-      if (foundQuotes.length !== 0) {
+  if(!req.query.source && !req.query.author){
+    Quote
+    .find()
+    .limit(parseInt(req.query.limit, 10))
+    .then(foundQuotes => {
+      if(foundQuotes.length !== 0){
         res.send(foundQuotes);
-      } else {
-        res.send({
-          message: "No quotes from requested author."
-        })
       }
+      else{
+        res.send({message: "No quotes from requested author."});
+      }
+    })
+    .catch(error => {
+      res.send(error);
+    });
+  }
 
-    } else {
-      res.send(err);
+  else{
+
+    if(req.query.source){
+      var query = titleCase(req.query.source);
     }
-  });
-});
 
-// SEARCH BY SOURCE
+    if(req.query.author){
+      var query = titleCase(req.query.author);
+    }
 
-app.get("/quotes/source=:source", (req, res) => {
-
-  const qSource = titleCase(req.params.source);
-
-  Quote
-  .find({source: qSource})
-  .limit(parseInt(req.query.limit, 10))
-  .exec((err, foundQuotes) => {
-    if (!err) {
-
-      if (foundQuotes.length !== 0) {
+    Quote
+    .find()
+    .or([{author: query}, {source: query}])
+    .limit(parseInt(req.query.limit, 10))
+    .then(foundQuotes => {
+      if(foundQuotes.length !== 0){
         res.send(foundQuotes);
-      } else {
-        res.send({
-          message: "No quotes from requested author."
-        })
       }
+      else{
+        res.send({message: "No quotes from " + query + "."});
+      }
+    })
+    .catch(error => {
+      res.send(error);
+    });
 
-    } else {
-      res.send(err);
-    }
-  });
+  }
+
+
 });
 
 // RANDOM QUOTE
@@ -113,6 +102,8 @@ app.get("/quotes/random", (req, res) => {
   });
 });
 
+//PORT
+
 app.listen(process.env.PORT || 3000, () => {
-  console.log("Server started on port 3000");
+  console.log("Server started.");
 });
