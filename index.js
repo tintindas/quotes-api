@@ -50,34 +50,9 @@ app.get("/quotes/author=:author", (req, res) => {
 
   const author_name = titleCase(req.params.author);
 
-  Quote.find({
-    author: author_name
-  }, (err, foundQuotes) => {
-    if (!err) {
-
-      if (foundQuotes.length !== 0) {
-        res.send(foundQuotes);
-      } else {
-        res.send({
-          message: "No quotes from requested author."
-        })
-      }
-
-    } else {
-      res.send(err);
-    }
-  });
-});
-
-// LIMIT QUERIES RETURNED
-
-app.get("/quotes/author=:author/:limit", (req, res) => {
-
-  const author_name = titleCase(req.params.author);
-
   Quote
   .find({author: author_name})
-  .limit(parseInt(req.params.limit, 10))
+  .limit(parseInt(req.query.limit, 10))
   .exec((err, foundQuotes) => {
     if (!err) {
 
@@ -101,34 +76,9 @@ app.get("/quotes/source=:source", (req, res) => {
 
   const qSource = titleCase(req.params.source);
 
-  Quote.find({
-    source: qSource
-  }, (err, foundQuotes) => {
-    if (!err) {
-
-      if (foundQuotes.length !== 0) {
-        res.send(foundQuotes);
-      } else {
-        res.send({
-          message: "No quotes from requested source."
-        })
-      }
-
-    } else {
-      res.send(err);
-    }
-  });
-});
-
-// LIMIT QUERIES RETURNED
-
-app.get("/quotes/source=:source/:limit", (req, res) => {
-
-  const qSource = titleCase(req.params.source);
-
   Quote
   .find({source: qSource})
-  .limit(parseInt(req.params.limit, 10))
+  .limit(parseInt(req.query.limit, 10))
   .exec((err, foundQuotes) => {
     if (!err) {
 
