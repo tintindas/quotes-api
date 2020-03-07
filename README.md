@@ -24,7 +24,7 @@ Returns all the quotes in the database.
 ## Search by author
 
 ```
-/quotes/author=<AUTHOR'S NAME>
+/quotes?author=<AUTHOR'S NAME
 ```
 
 Returns all quotes by specified author.
@@ -32,13 +32,15 @@ Returns all quotes by specified author.
 Example:
 
 ```
-/quotes/author=Neil Gaiman
+/quotes?author=Neil Gaiman
 ```
+
+Returns all quotes by Neil Gaiman.
 
 ## Search by source
 
 ```
-quotes/source=<SOURCE>
+quotes?source=<SOURCE>
 ```
 
 Returns all quotes from specified source.
@@ -46,13 +48,20 @@ Returns all quotes from specified source.
 Example:
 
 ```
-/quotes/source=Coraline
+/quotes?source=Coraline
 ```
+
+Returns all quotes from Coraline.
 
 ## Limit returned QUERIES
 
 ```
-/quotes/author=<AUTHOR'S NAME>/<NUMBER OF QUOTES REQUIRED>
+/quotes?limit=<NUMBER OF QUOTES REQUIRED>
+```
+Returns required number of quotes from the database.
+
+```
+/quotes?author=<AUTHOR'S NAME>&limit=<NUMBER OF QUOTES REQUIRED>
 ```
 
 Get required number of quotes returned by specifying a number after author or source.
@@ -72,6 +81,6 @@ Returns 20 quotes by Neil Gaiman.
 
 Returns random quote from database.
 
-# Try it out 
+# Try it out
 
 https://tintin-quotes-api.herokuapp.com
