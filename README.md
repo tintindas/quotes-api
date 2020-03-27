@@ -81,6 +81,47 @@ Returns 20 quotes by Neil Gaiman.
 
 Returns random quote from database.
 
+## Supported Authors
+
+Ursula K Le Guin
+
+Neil Gaiman
+
+Roxane Gay
+
+Douglas Adams
+
+Arthur C Clarke
+
+Margaret Atwood
+
+Isaac Asimov
+
+Mary Shelley
+
+Haruki Murakami
+
+Jane Austen
+
+Terry Pratchett
+
+Virginia Woolf
+
+Agatha Christie
+
+Sylvia Plath
+
+Harper Lee
+
+Arundhati Roy
+
+Emily Dickinson
+
+Emily Bronte
+
+Jhumpa Lahiri
+
+
 # Try it out
 
 https://tintin-quotes-api.herokuapp.com
