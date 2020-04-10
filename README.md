@@ -81,6 +81,14 @@ Returns 20 quotes by Neil Gaiman.
 
 Returns random quote from database.
 
+## List Authors
+
+```
+/authors
+```
+
+Returns an array of authors supported by the API.
+
 ## Supported Authors
 
 Ursula K Le Guin

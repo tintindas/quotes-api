@@ -87,6 +87,16 @@ app.get("/quotes", (req, res) => {
 
 });
 
+// LIST AUTHORS
+
+app.get("/authors", (req, res) => {
+
+  Quote.distinct("author")
+  .then(foundAuthors => {
+    res.send(foundAuthors);
+  });
+});
+
 // RANDOM QUOTE
 
 app.get("/quotes/random", (req, res) => {
