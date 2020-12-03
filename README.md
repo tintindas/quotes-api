@@ -12,6 +12,11 @@ Quote{
   source: String
 }
 ```
+## Base address
+
+```
+tintin-quotes-api.herokuapp.com
+```
 
 ## Get all quotes
 
