@@ -1,121 +1,102 @@
-require('dotenv').config()
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
+import express, { Application } from 'express'
+import mongoose, { Error } from 'mongoose'
+import cors from 'cors'
+import config from './config/config'
 
-const app = express();
-app.use(cors());
+import quoteRoutes from './routes/quote'
 
-mongoose.connect("mongodb+srv://tintin_das:"+process.env.MONGO_PASS+"@cluster0-yo7rn.mongodb.net/quotesDB", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+const app: Application = express()
+app.use(cors())
 
-const Schema = mongoose.Schema;
+// Connect to Database
+mongoose
+	.connect(config.mongo.url, config.mongo.options)
+	.then(() => console.log('Connected to mongoDB!'))
+	.catch((err: Error) => {
+		console.error(err)
+	})
 
-const quoteSchema = new Schema({
-  text: String,
-  author: String,
-  source: String
-});
+app.use('/quotes', quoteRoutes)
 
-const Quote = new mongoose.model("Quote", quoteSchema);
+// function titleCase(str: string) {
+// 	let splitStr = str.toLowerCase().split(' ')
+// 	for (var i = 0; i < splitStr.length; i++) {
+// 		splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1)
+// 	}
+// 	return splitStr.join(' ')
+// }
 
-function titleCase(str) {
-  let splitStr = str.toLowerCase().split(" ");
-  for (var i = 0; i < splitStr.length; i++) {
-       splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
-   }
-   return splitStr.join(' ');
-}
-
-//HOME
-
-app.get("/", (req, res) => {
-  res.redirect("/quotes/random");
-});
+// //HOME
 
 // SEARCH
 
-app.get("/quotes", (req, res) => {
+// app.get('/quotes', (req, res) => {
+// 	if (!req.query.source && !req.query.author) {
+// 		Quote.find()
+// 			.limit(parseInt(req.query.limit, 10))
+// 			.then((foundQuotes) => {
+// 				if (foundQuotes.length !== 0) {
+// 					res.send(foundQuotes)
+// 				} else {
+// 					res.send({ message: 'No quotes from requested author.' })
+// 				}
+// 			})
+// 			.catch((error) => {
+// 				res.send(error)
+// 			})
+// 	} else {
+// 		if (req.query.source) {
+// 			var query = titleCase(req.query.source)
+// 		}
 
-  if(!req.query.source && !req.query.author){
-    Quote
-    .find()
-    .limit(parseInt(req.query.limit, 10))
-    .then(foundQuotes => {
-      if(foundQuotes.length !== 0){
-        res.send(foundQuotes);
-      }
-      else{
-        res.send({message: "No quotes from requested author."});
-      }
-    })
-    .catch(error => {
-      res.send(error);
-    });
-  }
+// 		if (req.query.author) {
+// 			var query = titleCase(req.query.author)
+// 		}
 
-  else{
+// 		Quote.find()
+// 			.or([{ author: query }, { source: query }])
+// 			.limit(parseInt(req.query.limit, 10))
+// 			.then((foundQuotes) => {
+// 				if (foundQuotes.length !== 0) {
+// 					res.send(foundQuotes)
+// 				} else {
+// 					res.send({ message: 'No quotes from ' + query + '.' })
+// 				}
+// 			})
+// 			.catch((error) => {
+// 				res.send(error)
+// 			})
+// 	}
+// })
 
-    if(req.query.source){
-      var query = titleCase(req.query.source);
-    }
+// // LIST AUTHORS
 
-    if(req.query.author){
-      var query = titleCase(req.query.author);
-    }
+// app.get('/authors', (req, res) => {
+// 	Quote.distinct('author').then((foundAuthors) => {
+// 		res.send(foundAuthors)
+// 	})
+// })
 
-    Quote
-    .find()
-    .or([{author: query}, {source: query}])
-    .limit(parseInt(req.query.limit, 10))
-    .then(foundQuotes => {
-      if(foundQuotes.length !== 0){
-        res.send(foundQuotes);
-      }
-      else{
-        res.send({message: "No quotes from " + query + "."});
-      }
-    })
-    .catch(error => {
-      res.send(error);
-    });
+// // RANDOM QUOTE
 
-  }
+// app.get('/quotes/random', (req, res) => {
+// 	Quote.estimatedDocumentCount().exec((err, count) => {
+// 		let randNum = Math.floor(Math.random() * count)
 
-
-});
-
-// LIST AUTHORS
-
-app.get("/authors", (req, res) => {
-
-  Quote.distinct("author")
-  .then(foundAuthors => {
-    res.send(foundAuthors);
-  });
-});
-
-// RANDOM QUOTE
-
-app.get("/quotes/random", (req, res) => {
-  Quote.estimatedDocumentCount().exec((err, count) => {
-    let randNum = Math.floor(Math.random()*count);
-
-    Quote.findOne().skip(randNum).exec((err, foundQuote) =>{
-      if(!err){
-        res.send(foundQuote);
-      }
-      else{
-        res.send(err);
-      }
-    });
-  });
-});
+// 		Quote.findOne()
+// 			.skip(randNum)
+// 			.exec((err, foundQuote) => {
+// 				if (!err) {
+// 					res.send(foundQuote)
+// 				} else {
+// 					res.send(err)
+// 				}
+// 			})
+// 	})
+// })
 
 //PORT
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log("Server started.");
-});
+app.listen(config.port, () => {
+	console.log(`Server started on ${config.port}`)
+})
