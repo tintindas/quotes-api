@@ -4,6 +4,7 @@ import cors from 'cors'
 import config from './config/config'
 
 import quoteRoutes from './routes/quote'
+import authorRoutes from './routes/author'
 
 const app: Application = express()
 app.use(cors())
@@ -16,15 +17,9 @@ mongoose
 		console.error(err)
 	})
 
+// ROUTES
 app.use('/quotes', quoteRoutes)
-
-// function titleCase(str: string) {
-// 	let splitStr = str.toLowerCase().split(' ')
-// 	for (var i = 0; i < splitStr.length; i++) {
-// 		splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1)
-// 	}
-// 	return splitStr.join(' ')
-// }
+app.use('/authors', authorRoutes)
 
 // //HOME
 

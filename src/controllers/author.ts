@@ -1,14 +1,13 @@
 import { NextFunction, Request, Response } from 'express'
 import { Error } from 'mongoose'
 import Quote from '../models/quote'
-import IQuote from '../interfaces/quote'
 
-const getAllQuotes = (req: Request, res: Response, next: NextFunction) => {
-	Quote.find()
+const getAllAuthors = (req: Request, res: Response, next: NextFunction) => {
+	Quote.distinct('author')
 		.exec()
-		.then((results: IQuote[]) => {
+		.then((results: string[]) => {
 			return res.status(200).json({
-				quotes: results,
+				authors: results,
 				count: results.length
 			})
 		})
@@ -20,4 +19,4 @@ const getAllQuotes = (req: Request, res: Response, next: NextFunction) => {
 		})
 }
 
-export default { getAllQuotes }
+export default { getAllAuthors }
