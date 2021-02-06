@@ -5,6 +5,7 @@ import IQuote from '../interfaces/quote'
 
 const getAllQuotes = (req: Request, res: Response, next: NextFunction) => {
 	Quote.find()
+		.limit(parseInt(String(req.query.limit), 10))
 		.exec()
 		.then((results: IQuote[]) => {
 			return res.status(200).json({
