@@ -1,5 +1,5 @@
 //import external modules
-import express, { Application } from 'express'
+import express, { Application, Request, Response } from 'express'
 import mongoose, { Error } from 'mongoose'
 import cors from 'cors'
 import config from './config/config'
@@ -21,6 +21,9 @@ mongoose
 	})
 
 // ROUTES
+app.get('/', (req: Request, res: Response) => {
+	res.redirect('/quotes/random')
+})
 app.use('/quotes', quoteRoutes)
 app.use('/authors', authorRoutes)
 app.use('/sources', sourceRoutes)
