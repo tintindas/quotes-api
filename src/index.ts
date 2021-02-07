@@ -7,6 +7,7 @@ import config from './config/config'
 //import internal modules
 import quoteRoutes from './routes/quote'
 import authorRoutes from './routes/author'
+import sourceRoutes from './routes/source'
 
 const app: Application = express()
 app.use(cors())
@@ -22,6 +23,7 @@ mongoose
 // ROUTES
 app.use('/quotes', quoteRoutes)
 app.use('/authors', authorRoutes)
+app.use('/sources', sourceRoutes)
 
 // PORT
 app.listen(config.port, () => {

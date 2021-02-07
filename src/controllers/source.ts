@@ -2,8 +2,8 @@ import { Request, Response } from 'express'
 import { Error } from 'mongoose'
 import Quote from '../models/quote'
 
-const getAllAuthors = (req: Request, res: Response) => {
-	Quote.distinct('author')
+const getAllSources = (req: Request, res: Response) => {
+	Quote.distinct('source')
 		.exec()
 		.then((results: string[]) => {
 			return res.status(200).json({
@@ -19,4 +19,4 @@ const getAllAuthors = (req: Request, res: Response) => {
 		})
 }
 
-export default { getAllAuthors }
+export default { getAllSources }
